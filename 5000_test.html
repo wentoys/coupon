@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<style>
+    table{
+        text-align: center;
+    }
+    p{
+      color: #26b72b;
+      width: 200;
+      text-align: center;
+    }
+    input[type="text"]{
+        padding:5px 15px; 
+        order:2px black solid;
+        cursor:pointer;
+        -webkit-border-radius: 5px;
+        border-radius: 5px; 
+    }
+    input[type="checkbox"]{
+        padding:5px 15px; 
+        order:2px black solid;
+    }
+</style>
+
+<html>
+
+<head>
+    <title>5000加碼券查詢</title>
+</head>
+<body>
+        <table>
+            <tr>
+                <td>身分證(末三碼)</td>
+                <td width="80px">國旅券</td>
+                <td width="80px">i原券</td>
+                <td width="80px">農遊券</td>
+                <td width="80px">藝FUN-數位券</td>
+                <td width="80px">藝FUN-紙本券</td>
+                <td width="80px">動姿券</td>
+                <td width="80px">客庄券</td>
+                <td width="80px">地方創生券</td>
+            </tr>
+            <tr>
+                <td><input id = 'te1' name="te1" type="text"></td>
+                <td><input name="cb" type="checkbox" checked></td>
+                <td><input name="cb" type="checkbox" checked></td>
+                <td><input name="cb" type="checkbox" checked></td>
+                <td><input name="cb" type="checkbox" checked></td>
+                <td><input name="cb" type="checkbox" checked></td>
+                <td><input name="cb" type="checkbox" checked></td>
+                <td><input name="cb" type="checkbox" checked></td>
+                <td><input name="cb" type="checkbox" checked></td>
+            </tr>
+            <tr>
+                <td colspan="6"><button type="button" onclick="getid()">查詢</button></td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <td>查詢結果</td>
+            </tr>
+            <tr>
+                <td><p id="result_desc"></p></td>
+            </tr>
+            <tr>
+                <td><p id="result_wk1"></p></td>
+            </tr>
+            <tr>
+                <td><p id="result_wk2"></p></td>
+            </tr>
+            <tr>
+                <td><p id="result_wk3"></p></td>
+            </tr>
+            <tr>
+                <td><p id="result_wk4"></p></td>
+            </tr>
+        </table>
+    </form>
+    
+</body>
+</html>
+<script language="javascript"> 
+    var week1_no1=[ 
+                ["21","32","98","67","97","410"], 
+                ["64","85"], 
+                ["89","32","54","597","453","152"], 
+                ["96","15","07","30","73","98","19","11"],
+                ["39","37","23","36","79","08","14","75"],
+                ["97","13","19","55","71","93","381","734","644","453","985"],
+                ["81","900"],
+                ["081","105","594","188","089","396","521","467","912","798","358","441","367","941","335"]
+            ];
+    function getid(){
+        //取TEXT值
+        var pid= document.getElementById("te1").value;
+        WriteValue(pid);
+    }
+    function check(obj){ 
+        var patrn=/^[0-9]{1,20}$/;   
+        if(!patrn.test(obj.value)){ 
+        alert("輸入錯誤!只能輸入純數字!!"); 
+        obj.value=''; 
+        obj.focus(); 
+        return   false;  
+        }else{ 
+        alert("輸入正確!!"); 
+        } 
+    }
+    function WriteValue(pid){        
+        var flag ="N";
+        var round = 4;
+        var cb_id = document.getElementsByName('cb');
+        var coupons_value = new Array();
+        for(var i = 0; i < cb_id.length; i++ ){
+            if(cb_id[i].checked){
+                coupons_value.push("Y");
+            }else{coupons_value.push("N");}
+            
+        } 
+        for(var i=0;i<week1_no1.length;i++){
+            var coupons ="";
+            if (coupons_value[i] == "Y"){
+                if (i==0){
+                    coupons = "國旅券";
+                }else if (i==1){
+                    coupons = "i原券";
+                }else if (i==2){
+                    coupons = "農遊券";
+                }else if (i==3){
+                    coupons = "藝FUN-數位券";
+                }else if (i==4){
+                    coupons = "藝FUN-紙本券";
+                }else if (i==5){
+                    coupons = "動姿券";
+                }else if (i==6){
+                    coupons = "客庄券";
+                }else if (i==7){
+                    coupons = "地方創生券";
+                }
+                }else{continue;}
+
+            for(var j=0;j<week1_no1[i].length;j++){
+                if (pid.slice(-week1_no1[i][j].length) == week1_no1[i][j]){
+                    var i_str = "恭喜，您於第一周中了"+"["+coupons+"]";
+                    flag = 'Y'
+                    break;
+                }else{
+                    var i_str = "抱歉，您第一周沒中!"
+                    flag = 'N'
+                }
+            }
+            if (flag=='Y'){break;}
+        }                    
+        //i_str = coupons_value[0];
+        var i_str_desc = "每人每周可中獎一次，共計最多可中[ "+round+" ]次";
+        document.getElementById("result_desc").innerHTML=i_str_desc;
+        document.getElementById("result_wk1").innerHTML=i_str;
+        //result1.innerText = i_str ;
+    }
+    function set_no(){
+
+    }
+</script> 
