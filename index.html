@@ -6,7 +6,7 @@
     p{
       color: #26b72b;
       width: 200;
-      text-align: center;
+      text-align: left;
     }
     input[type="text"]{
         padding:5px 15px; 
@@ -30,6 +30,11 @@
         <table>
             <tr>
                 <td>身分證(末三碼)</td>
+            </tr>
+            <tr>
+                <td><input id = 'te1' name="te1" type="text"></td>
+            </tr>
+            <tr>
                 <td width="80px">國旅券</td>
                 <td width="80px">i原券</td>
                 <td width="80px">農遊券</td>
@@ -40,7 +45,6 @@
                 <td width="80px">地方創生券</td>
             </tr>
             <tr>
-                <td><input id = 'te1' name="te1" type="text"></td>
                 <td><input name="cb" type="checkbox" checked></td>
                 <td><input name="cb" type="checkbox" checked></td>
                 <td><input name="cb" type="checkbox" checked></td>
@@ -62,16 +66,16 @@
                 <td><p id="result_desc"></p></td>
             </tr>
             <tr>
-                <td><p id="result_wk1"></p></td>
+                <td ><p id="result_wk1"></p></td>
             </tr>
             <tr>
-                <td><p id="result_wk2"></p></td>
+                <td ><p id="result_wk2"></p></td>
             </tr>
             <tr>
-                <td><p id="result_wk3"></p></td>
+                <td ><p id="result_wk3"></p></td>
             </tr>
             <tr>
-                <td><p id="result_wk4"></p></td>
+                <td ><p id="result_wk4"></p></td>
             </tr>
         </table>
     </form>
@@ -79,7 +83,7 @@
 </body>
 </html>
 <script language="javascript"> 
-    var week1_no1=[ 
+    var week1_no=[ 
                 ["21","32","98","67","97","410"], 
                 ["64","85"], 
                 ["89","32","54","597","453","152"], 
@@ -89,21 +93,14 @@
                 ["81","900"],
                 ["081","105","594","188","089","396","521","467","912","798","358","441","367","941","335"]
             ];
+    var week2_no=[ 
+                ["04","29","40","71","87"], 
+                ["12","59"]
+            ];
     function getid(){
         //取TEXT值
         var pid= document.getElementById("te1").value;
         WriteValue(pid);
-    }
-    function check(obj){ 
-        var patrn=/^[0-9]{1,20}$/;   
-        if(!patrn.test(obj.value)){ 
-        alert("輸入錯誤!只能輸入純數字!!"); 
-        obj.value=''; 
-        obj.focus(); 
-        return   false;  
-        }else{ 
-        alert("輸入正確!!"); 
-        } 
     }
     function WriteValue(pid){        
         var flag ="N";
@@ -116,7 +113,7 @@
             }else{coupons_value.push("N");}
             
         } 
-        for(var i=0;i<week1_no1.length;i++){
+        for(var i=0;i<week1_no.length;i++){
             var coupons ="";
             if (coupons_value[i] == "Y"){
                 if (i==0){
@@ -138,8 +135,8 @@
                 }
                 }else{continue;}
 
-            for(var j=0;j<week1_no1[i].length;j++){
-                if (pid.slice(-week1_no1[i][j].length) == week1_no1[i][j]){
+            for(var j=0;j<week1_no[i].length;j++){
+                if (pid.slice(-week1_no[i][j].length) == week1_no[i][j]){
                     var i_str = "恭喜，您於第一周中了"+"["+coupons+"]";
                     flag = 'Y'
                     break;
@@ -149,11 +146,46 @@
                 }
             }
             if (flag=='Y'){break;}
-        }                    
+        } 
+        for(var i=0;i<week2_no.length;i++){
+            var coupons ="";
+            if (coupons_value[i] == "Y"){
+                if (i==0){
+                    coupons = "國旅券";
+                }else if (i==1){
+                    coupons = "i原券";
+                }else if (i==2){
+                    coupons = "農遊券";
+                }else if (i==3){
+                    coupons = "藝FUN-數位券";
+                }else if (i==4){
+                    coupons = "藝FUN-紙本券";
+                }else if (i==5){
+                    coupons = "動姿券";
+                }else if (i==6){
+                    coupons = "客庄券";
+                }else if (i==7){
+                    coupons = "地方創生券";
+                }
+                }else{continue;}
+
+            for(var j=0;j<week2_no[i].length;j++){
+                if (pid.slice(-week2_no[i][j].length) == week2_no[i][j]){
+                    var i_str2 = "恭喜，您於第二周中了"+"["+coupons+"]，LUCKY~";
+                    flag = 'Y'
+                    break;
+                }else{
+                    var i_str2 = "抱歉，您第二周還是沒中!"
+                    flag = 'N'
+                }
+            }
+            if (flag=='Y'){break;}
+        }                   
         //i_str = coupons_value[0];
         var i_str_desc = "每人每周可中獎一次，共計最多可中[ "+round+" ]次";
         document.getElementById("result_desc").innerHTML=i_str_desc;
         document.getElementById("result_wk1").innerHTML=i_str;
+        document.getElementById("result_wk2").innerHTML=i_str2;
         //result1.innerText = i_str ;
     }
     function set_no(){
