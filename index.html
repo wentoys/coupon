@@ -25,14 +25,21 @@
 
 <head>
     <title>5000加碼券查詢</title>
+    <style>body{width:25%;margin:auto}</style>
 </head>
 <body>
+    <form>
         <table>
             <tr>
-                <td>身分證(末三碼)</td>
+                <td><p style="color: darkred;">兌獎庫已更新至 第[二]周-[藝FUN]</p></td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <td colspan="3">身分證(末三碼)</td>
             </tr>
             <tr>
-                <td><input id = 'te1' name="te1" type="text"></td>
+                <td colspan="3"><input id = 'te1' name="te1" type="text"></td>
             </tr>
             <tr>
                 <td width="80px">國旅券</td>
@@ -40,7 +47,7 @@
                 <td width="80px">農遊券</td>
                 <td width="80px">藝FUN-數位券</td>
                 <td width="80px">藝FUN-紙本券</td>
-                <td width="80px">動姿券</td>
+                <td width="80px">動滋券</td>
                 <td width="80px">客庄券</td>
                 <td width="80px">地方創生券</td>
             </tr>
@@ -66,6 +73,9 @@
                 <td><p id="result_desc"></p></td>
             </tr>
             <tr>
+                <td><p id="result_pid"></p></td>
+            </tr>
+            <tr>
                 <td ><p id="result_wk1"></p></td>
             </tr>
             <tr>
@@ -83,6 +93,7 @@
 </body>
 </html>
 <script language="javascript"> 
+    var coupons_name=["國旅券","i原券","農遊券","藝FUN-數位券","藝FUN-紙本券","動滋券","客庄券","地方創生券"];
     var week1_no=[ 
                 ["21","32","98","67","97","410"], 
                 ["64","85"], 
@@ -95,15 +106,21 @@
             ];
     var week2_no=[ 
                 ["04","29","40","71","87"], 
-                ["12","59"]
+                ["12","59"],
+                ["50","13"],
+                ["78","00","39","22","61","23","15"],
+                ["37","76","31","06","51","65","81"]
+
             ];
     function getid(){
         //取TEXT值
         var pid= document.getElementById("te1").value;
         WriteValue(pid);
     }
-    function WriteValue(pid){        
+    function WriteValue(pid){   
+        var already_get=["N","N","N","N","N","N","N","N"];    
         var flag ="N";
+        var total='N';
         var round = 4;
         var cb_id = document.getElementsByName('cb');
         var coupons_value = new Array();
@@ -116,32 +133,18 @@
         for(var i=0;i<week1_no.length;i++){
             var coupons ="";
             if (coupons_value[i] == "Y"){
-                if (i==0){
-                    coupons = "國旅券";
-                }else if (i==1){
-                    coupons = "i原券";
-                }else if (i==2){
-                    coupons = "農遊券";
-                }else if (i==3){
-                    coupons = "藝FUN-數位券";
-                }else if (i==4){
-                    coupons = "藝FUN-紙本券";
-                }else if (i==5){
-                    coupons = "動姿券";
-                }else if (i==6){
-                    coupons = "客庄券";
-                }else if (i==7){
-                    coupons = "地方創生券";
-                }
+                coupons=coupons_name[i];
                 }else{continue;}
 
             for(var j=0;j<week1_no[i].length;j++){
                 if (pid.slice(-week1_no[i][j].length) == week1_no[i][j]){
+                    already_get[i]='Y';
                     var i_str = "恭喜，您於第一周中了"+"["+coupons+"]";
-                    flag = 'Y'
+                    flag = 'Y';   
+                    total='Y';
                     break;
                 }else{
-                    var i_str = "抱歉，您第一周沒中!"
+                    var i_str = "抱歉，您第一周沒中!";
                     flag = 'N'
                 }
             }
@@ -150,40 +153,34 @@
         for(var i=0;i<week2_no.length;i++){
             var coupons ="";
             if (coupons_value[i] == "Y"){
-                if (i==0){
-                    coupons = "國旅券";
-                }else if (i==1){
-                    coupons = "i原券";
-                }else if (i==2){
-                    coupons = "農遊券";
-                }else if (i==3){
-                    coupons = "藝FUN-數位券";
-                }else if (i==4){
-                    coupons = "藝FUN-紙本券";
-                }else if (i==5){
-                    coupons = "動姿券";
-                }else if (i==6){
-                    coupons = "客庄券";
-                }else if (i==7){
-                    coupons = "地方創生券";
-                }
+                coupons=coupons_name[i];
                 }else{continue;}
 
             for(var j=0;j<week2_no[i].length;j++){
                 if (pid.slice(-week2_no[i][j].length) == week2_no[i][j]){
-                    var i_str2 = "恭喜，您於第二周中了"+"["+coupons+"]，LUCKY~";
-                    flag = 'Y'
-                    break;
+                    if (already_get[i]=='N') {
+                        var i_str2 = "恭喜，您於第二周中了"+"["+coupons+"]，LUCKY~";
+                        flag = 'Y';
+                        break;
+                    }
                 }else{
-                    var i_str2 = "抱歉，您第二周還是沒中!"
-                    flag = 'N'
+                    if (total =='N'){
+                        var i_str2 = "抱歉，您第二周還是沒中!";
+                        flag = 'N';
+                    }else{
+                        var i_str2 = "可惜，您第二周沒中!";
+                        flag = 'N';
+                    }
+                    
                 }
             }
             if (flag=='Y'){break;}
         }                   
         //i_str = coupons_value[0];
         var i_str_desc = "每人每周可中獎一次，共計最多可中[ "+round+" ]次";
+        var i_str_pid = "此次查詢 編號 ["+pid+"]";
         document.getElementById("result_desc").innerHTML=i_str_desc;
+        document.getElementById("result_pid").innerHTML=i_str_pid;
         document.getElementById("result_wk1").innerHTML=i_str;
         document.getElementById("result_wk2").innerHTML=i_str2;
         //result1.innerText = i_str ;
