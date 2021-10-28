@@ -31,7 +31,7 @@
     <form>
         <table>
             <tr>
-                <td><p style="color: darkred;">兌獎庫已更新至 第[二]周-[客庄券]</p></td>
+                <td><p style="color: darkred;">兌獎庫已更新至 第[三]周-[客庄券]</p></td>
             </tr>
         </table>
         <table>
@@ -111,7 +111,18 @@
                 ["78","00","39","22","61","23","15"],
                 ["37","76","31","06","51","65","81"],
                 ["91","11","04","18","57","498","756"],
-                ["11","439","841","052","206","161","457","205","012","293","446","589"]
+                ["11","439","841","052","206","161","457","205","012","293","446","589"],
+                ["598","880","886","675","684","568","645","456"]
+
+            ];
+    var week3_no=[ 
+                ["44","34","09","55","35","041"], 
+                ["48","49"],
+                ["60","75"],
+                ["01","92","19","23","79","95","48","46"],
+                ["31","56","02","52","44","49","00","47","59"],
+                ["82","45","57","53","00","546","855","865","012","983"],
+                ["14","269"]
 
             ];
     function getid(){
@@ -177,6 +188,32 @@
                 }
             }
             if (flag=='Y'){break;}
+        }
+        for(var i=0;i<week3_no.length;i++){
+            var coupons ="";
+            if (coupons_value[i] == "Y"){
+                coupons=coupons_name[i];
+                }else{continue;}
+
+            for(var j=0;j<week3_no[i].length;j++){
+                if (pid.slice(-week3_no[i][j].length) == week3_no[i][j]){
+                    if (already_get[i]=='N') {
+                        var i_str3 = "恭喜，您於第三周中了"+"["+coupons+"]，LUCKY~";
+                        flag = 'Y';
+                        break;
+                    }
+                }else{
+                    if (total =='N'){
+                        var i_str3 = "抱歉，您第三周還是沒中!";
+                        flag = 'N';
+                    }else{
+                        var i_str3 = "可惜，您第三周沒中!";
+                        flag = 'N';
+                    }
+                    
+                }
+            }
+            if (flag=='Y'){break;}
         }                   
         //i_str = coupons_value[0];
         var i_str_desc = "每人每周可中獎一次，共計最多可中[ "+round+" ]次";
@@ -185,6 +222,7 @@
         document.getElementById("result_pid").innerHTML=i_str_pid;
         document.getElementById("result_wk1").innerHTML=i_str;
         document.getElementById("result_wk2").innerHTML=i_str2;
+        document.getElementById("result_wk3").innerHTML=i_str3;
         //result1.innerText = i_str ;
     }
     function set_no(){
